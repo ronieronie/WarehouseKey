@@ -16,6 +16,9 @@ WORKDIR /var/www/html
 # Copy project files
 COPY . .
 
+# Fallback .env
+RUN cp .env.example .env 2>/dev/null || true
+
 # Install Laravel dependencies
 RUN composer install --optimize-autoloader --no-dev
 
@@ -24,6 +27,12 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 
 # Apache config
 RUN sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
-RUN a2enmod rewrite
+RUN a2enmod rewrite headers
+RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# Entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 EXPOSE 80
+CMD ["/entrypoint.sh"]
