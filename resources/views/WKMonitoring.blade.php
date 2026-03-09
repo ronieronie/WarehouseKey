@@ -149,6 +149,20 @@
     </script>
 
     <script>
+
+        $(document).ready(function () {
+            const now = new Date();
+
+            // Format date as YYYY-MM-DD
+            const date = now.toLocaleDateString('en-CA'); // gives YYYY-MM-DD format
+
+            // Format time as HH:MM
+            const time = now.toTimeString().slice(0, 5); // gives HH:MM format
+
+            $('#dateInput').val(date);
+            $('#timeInInput').val(time);
+        });
+        
         function convertTo12Hr(time) {
             return new Date('1970-01-01T' + time).toLocaleTimeString('en-US', {
                 hour: '2-digit',
