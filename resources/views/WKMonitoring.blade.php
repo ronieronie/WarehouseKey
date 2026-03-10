@@ -149,7 +149,6 @@
     </script>
 
     <script>
-
         $(document).ready(function () {
             const now = new Date();
 
@@ -162,7 +161,7 @@
             $('#dateInput').val(date);
             $('#timeInInput').val(time);
         });
-        
+
         function convertTo12Hr(time) {
             return new Date('1970-01-01T' + time).toLocaleTimeString('en-US', {
                 hour: '2-digit',
@@ -211,14 +210,44 @@
             var time_borrowed = convertTo12Hr($("#timeInInput").val());
             var time_return = "Pending";
 
+            // 👇 Show loading here
+            Swal.fire({
+                title: 'Submitting...',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                width: '400px',
+                padding: '1rem',
+                customClass: {
+                    title: 'fs-4', // 👈
+                },
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             $.ajax({
-                url: '{{ route('add_borrower') }}',
+                url: '{{ route("add_borrower") }}',
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
                     name, date_borrowed, time_borrowed, time_return
                 },
                 success: function (response) {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Record has been submitted.",
+                        icon: "success",
+                        confirmButtonText: "OK",
+                        confirmButtonColor: "#3085d6",
+                        width: '400px',
+                        padding: '2rem',
+                        customClass: {
+                            confirmButton: 'btn btn-primary btn-sm px-4',
+                            title: 'fs-4',
+                            htmlContainer: 'fs-6'
+                        },
+                        buttonsStyling: false,
+                    });
                     $('#BorrowerTable').DataTable().ajax.reload();
                 },
                 error: function (xhr) {
@@ -227,11 +256,20 @@
                         title: "Warning!",
                         text: response.message,
                         icon: "warning",
+                        confirmButtonText: "OK",
+                        confirmButtonColor: "#f0a500",
+                        width: '400px',
+                        padding: '2rem',
+                        customClass: {
+                            confirmButton: 'btn btn-warning btn-sm px-4',
+                            title: 'fs-4',
+                            htmlContainer: 'fs-6'
+                        },
+                        buttonsStyling: false,
                     });
                 }
-            })
+            });
         });
-
         $(document).on('click', '.btn_update', function () {
             var time_borrowed = $(this).data('time_borrowed')
 
@@ -252,8 +290,23 @@
             var time_borrowed = $("#update_time_borrowed").val();
             var time_return = convertTo12Hr($("#update_time_returned").val());
 
+            // 👇 Show loading here
+            Swal.fire({
+                title: 'Updating...',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                width: '400px',
+                padding: '2rem',
+                customClass: {
+                    title: 'fs-4',
+                },
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             $.ajax({
-                url: '{{ route('update_borrower') }}',
+                url: '{{ route("update_borrower") }}',
                 type: 'POST',
                 data: {
                     _token: '{{ csrf_token() }}',
@@ -262,13 +315,41 @@
                 success: function (response) {
                     Swal.fire({
                         title: "Success!",
-                        text: "Record has been updated",
+                        text: "Record has been updated.",
                         icon: "success",
+                        confirmButtonText: "OK",
+                        confirmButtonColor: "#3085d6",
+                        width: '400px',
+                        padding: '2rem',
+                        customClass: {
+                            confirmButton: 'btn btn-primary btn-sm px-4',
+                            title: 'fs-4',
+                            htmlContainer: 'fs-6'
+                        },
+                        buttonsStyling: false,
                     });
                     $('#BorrowerTable').DataTable().ajax.reload();
+                },
+                error: function (xhr) {
+                    Swal.fire({
+                        title: "Error!",
+                        text: "Something went wrong.",
+                        icon: "error",
+                        confirmButtonText: "OK",
+                        confirmButtonColor: "#d33",
+                        width: '400px',
+                        padding: '2rem',
+                        customClass: {
+                            confirmButton: 'btn btn-danger btn-sm px-4',
+                            title: 'fs-4',
+                            htmlContainer: 'fs-6'
+                        },
+                        buttonsStyling: false,
+                    });
                 }
-            })
+            });
         });
+
 
         $(document).on('click', '.btn_delete', function () {
             var delete_id = $(this).data('id');
@@ -277,13 +358,39 @@
                 text: "You won't be able to revert this!",
                 icon: "warning",
                 showCancelButton: true,
+                confirmButtonText: "Yes",
+                cancelButtonText: "Cancel",
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes"
+                width: '400px',
+                padding: '2rem',
+                customClass: {
+                    confirmButton: 'btn btn-primary px-4',
+                    cancelButton: 'btn btn-danger px-4',
+                    actions: 'gap-2',
+                    title: 'fs-4',
+                    htmlContainer: 'fs-6'
+                },
+                buttonsStyling: false,
             }).then((result) => {
                 if (result.isConfirmed) {
+                    // Loading
+                    Swal.fire({
+                        title: 'Deleting...',
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        width: '400px',
+                        padding: '2rem',
+                        customClass: {
+                            title: 'fs-4',
+                        },
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
                     $.ajax({
-                        url: '{{ route('delete_borrower') }}',
+                        url: '{{ route("delete_borrower") }}',
                         type: 'POST',
                         data: {
                             _token: '{{ csrf_token() }}',
@@ -293,18 +400,24 @@
                             Swal.fire({
                                 title: "Deleted!",
                                 text: "Record has been deleted.",
-                                icon: "success"
+                                icon: "success",
+                                confirmButtonText: "OK",
+                                confirmButtonColor: "#3085d6",
+                                width: '400px',
+                                padding: '2rem',
+                                customClass: {
+                                    confirmButton: 'btn btn-primary btn-sm px-4',
+                                    title: 'fs-4',
+                                    htmlContainer: 'fs-6'
+                                },
+                                buttonsStyling: false,
                             });
                             $('#BorrowerTable').DataTable().ajax.reload();
                         }
-                    })
-
+                    });
                 }
             });
-
         });
-
-
     </script>
 
 </body>

@@ -26,21 +26,21 @@ class BorrowerController extends Controller
                 return $row->date_borrowed;
             })
             ->addColumn('time_borrowed', function ($row) {
-                return $row->time_borrowed;
+                return date('h:i A', strtotime($row->time_borrowed));
             })
             ->addColumn('time_return', function ($row) {
                 // 
                 if($row->time_return==null){
                     return "Pending";
                 }
-                return $row->time_return;
+                return date('h:i A', strtotime($row->time_return));
             })
             ->addColumn('action', function ($row) {
                 return '<button type="button" class="btn btn-primary btn_update" id="" 
                                 data-id="' . $row->id . '" 
                                 data-name="' . $row->name . '"  
                                 data-date="' . $row->date_borrowed . '"  
-                                data-time_borrowed="' . $row->time_borrowed . '"   
+                                data-time_borrowed="' . date('h:i A', strtotime($row->time_borrowed)) . '"   
                                 data-time_return="' . $row->time_return . '" 
                  data-role="' . $row->role_id . '" 
                 >Update</button>
@@ -61,9 +61,6 @@ class BorrowerController extends Controller
             Carbon::createFromFormat('h:i A', $request->time_return)->format('H:i:s');
 
         $pending = Borrower::whereNull('time_return')->exists(); // 
-
-
-
         if ($pending) {
             return response()->json([
                 'success' => false,
@@ -87,8 +84,8 @@ class BorrowerController extends Controller
         Borrower::where('id', $id)->update([
             'name' => $request->name,
             'date_borrowed' => $request->date_borrowed,
-            'time_borrowed' => $request->time_borrowed,
-            'time_return' => $request->time_return
+            'time_borrowed' => Carbon::parse($request->time_borrowed)->format('H:i:s'),
+            'time_return' => Carbon::parse($request->time_return)->format('H:i:s')
         ]);
         return response()->json(['success' => true]);
     }

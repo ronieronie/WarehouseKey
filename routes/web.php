@@ -24,7 +24,7 @@ Route::get('/admin', function () {
     return view('index');
 });
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/getBorrowers', [BorrowerController::class,'getBorrowers'])->name('get_borrowers');
 Route::post('/add_borrower', [BorrowerController::class,'add_borrower'])->name('add_borrower');
 Route::post('/update_borrower', [BorrowerController::class,'update_borrower'])->name('update_borrower');

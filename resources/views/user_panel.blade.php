@@ -177,16 +177,42 @@
         var time_return = 'Pending';
 
         Swal.fire({
-            title: "Submit?",
-            text: "Make sure the information is correct",
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
             icon: "warning",
-            width: '300px',
             showCancelButton: true,
+            confirmButtonText: "Yes",
+            cancelButtonText: "Cancel",
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Ok"
+            width: '400px',
+            padding: '2rem',
+            customClass: {
+                confirmButton: 'btn btn-primary px-4',
+                cancelButton: 'btn btn-danger px-4',
+                actions: 'gap-2',
+                title: 'fs-4',
+                htmlContainer: 'fs-6'
+            },
+            buttonsStyling: false,
         }).then((result) => {
             if (result.isConfirmed) {
+
+                // 👇 Show loading here
+                Swal.fire({
+                    title: 'Submitting...',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    width: '400px',
+                    padding: '1rem',
+                    customClass: {
+                        title: 'fs-4', // 👈
+                    },
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
                 $.ajax({
                     url: '{{ route("add_borrower") }}',
                     type: 'POST',
@@ -197,9 +223,18 @@
                     success: function (response) {
                         Swal.fire({
                             title: "Success!",
-                            text: "Record has been submitted",
+                            text: "Record has been submitted.",
                             icon: "success",
-                            width: '300px',
+                            confirmButtonText: "OK",
+                            confirmButtonColor: "#3085d6",
+                            width: '400px',
+                            padding: '2rem',
+                            customClass: {
+                                confirmButton: 'btn btn-primary btn-sm px-4',
+                                title: 'fs-4',
+                                htmlContainer: 'fs-6'
+                            },
+                            buttonsStyling: false,
                         });
                         $("#nameInput").val('');
                         $("#dateInput").val('');
@@ -208,7 +243,7 @@
                     },
                     error: function (xhr) {
                         var response = JSON.parse(xhr.responseText);
-                        Swal.fire({
+                        Swal.fire({  // 👈 Replaces loading automatically
                             title: "Warning!",
                             text: response.message,
                             icon: "warning",

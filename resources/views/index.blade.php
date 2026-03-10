@@ -214,3 +214,13 @@
 </body>
 
 </html>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+  $(document).ready(function () {
+    history.pushState(null, null, location.href);
+
+    window.onpopstate = function () {
+      history.go(1);
+    };
+  });
+</script>
