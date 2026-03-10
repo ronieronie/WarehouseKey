@@ -115,12 +115,12 @@
             <h5 style="padding: 10px">Borrowing Tracker Form</h5>
         </center>
 
-        <form action="" method="POST">
+        <form>
             <!-- Name -->
             <label class="form-label">
                 <i class="bi bi-person"></i> Name
             </label>
-            <input type="text" class="form-control" name="name" id="nameInput" placeholder="Enter your name" required />
+            <input type="text" class="form-control" name="name" id="nameInput" placeholder="Enter your name" required/>
 
             <!-- Date Borrowed -->
             <label class="form-label">
