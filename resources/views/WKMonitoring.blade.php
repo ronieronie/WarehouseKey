@@ -175,6 +175,7 @@
                 destroy: true,
                 serverSide: false,
                 processing: false,
+                order: [[0, 'desc']],
                 ajax: {
                     url: '{{ route('get_borrowers') }}',
                     type: 'GET', //if GET, no need for csrf token
@@ -200,8 +201,6 @@
                     data: 'action'
                 }]
             });
-
-
         });
 
         $(document).on('click', '#add_record_btn', function () {
