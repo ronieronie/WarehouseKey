@@ -110,7 +110,7 @@
 
     <div class="form-card">
 
-        <center><img src="{{ asset('img/ch_logo1.PNG') }}" alt="" style="border-radius: 10px;"></center>
+        <center><img src="{{ asset('img/ch_logo1.PNG') }}" alt="" style="border-radius: 10px; width: 200px;"></center>
         <center>
             <h5 style="padding: 10px">Borrowing Tracker Form</h5>
         </center>

@@ -167,7 +167,7 @@
   </style>
 </head>
 
-<body>
+<body style="padding: 20px;">
 
   <div class="login-card">
 
@@ -177,7 +177,7 @@
     </div> -->
 
     <!-- Title -->
-    <center><img src="{{ asset('img/ch_logo1.PNG') }}" alt="" style="border-radius: 10px"></center>
+    <center><img src="{{ asset('img/ch_logo1.PNG') }}" alt="" style="border-radius: 10px; width:200px;"></center>
     <!-- <h1 class="login-title">Warehouse Key</h1> -->
     <p class="login-subtitle">Enter your credentials to continue</p>
 
