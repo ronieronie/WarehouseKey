@@ -270,7 +270,9 @@
             });
         });
         $(document).on('click', '.btn_update', function () {
+            const now = new Date();
             var time_borrowed = $(this).data('time_borrowed')
+            const return_time = now.toTimeString().slice(0, 5); // gives HH:MM format
 
             $('#update_modal').modal('show');
             $('#id').val($(this).data('id'));
@@ -278,7 +280,7 @@
             $('#update_name').val($(this).data('name'));
             // $('#update_time_borrowed').val(convertTo12Hr($(this).data('time_borrowed')));
             $('#update_time_borrowed').val(time_borrowed);
-            $('#update_time_returned').val($(this).data('time_return'));
+            $('#update_time_returned').val(return_time);
         });
 
         $(document).on('click', '#update_btn', function () {
